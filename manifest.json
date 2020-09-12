@@ -1,0 +1,26 @@
+   {
+    "name": "Coronavirus Live Status | COVID-19 Simulator",
+    "version": "0.3.6",
+    "description": "Coronavirus live status in your country",
+    "permissions": [ "activeTab","storage"],
+    "background": {
+    "scripts": ["js/moment.min.js", "background.js", "buy.js"],
+    "persistent":true
+    },
+    "content_security_policy":"script-src 'self' https://uv-weather.herokuapp.com https://coronavirusapi.com https://ipinfo.io https://pomber.github.io https://corona.lmao.ninja https://covid19.mathdro.id https://api.mapbox.com; object-src 'self'",
+    "browser_action": {
+    "default_title": "Coronavirus Live Status | COVID-19",
+      "default_popup": "popup.html",
+      "default_icon": {
+        "128": "coronavirus_128.png"
+      }
+    },
+	  "icons": {
+      "16": "coronavirus_16.png",
+        "32": "coronavirus_32.png",
+        "48": "coronavirus_48.png",
+        "128": "coronavirus_128.png"
+    },
+    "manifest_version": 2
+  }
+   

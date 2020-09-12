@@ -1,0 +1,222 @@
+ <!DOCTYPE html>
+<html>
+
+  <div class="preloader loaded">
+    <img src="/spinner.svg" alt="spinner">
+  </div>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Coronavirus Live Status</title>
+  <link rel="preconnect" href="https://uv-weather.herokuapp.com" />
+  <link rel="preload" href="popup.js" as="script" />
+
+  <script src="/js/moment.min.js"></script>
+  <script src="/js/html2canvas.min.js"></script>
+  <script src="/background.js"></script>
+  <script rel="preload" src="/popup.js"></script>
+
+  <script src="/js/common.js"></script>
+  <script src="/js/vector2d.js"></script>
+  <script src="/js/ball.js"></script>
+  <script src="/js/chart.js"></script>
+  <script src="/js/simulation.js"></script>
+  <script src="/js/apexcharts.min.js"></script>
+  <script src="/js/toastify.js"></script>
+
+  <link rel="stylesheet" href="/popup.css" media="screen" />
+
+  <script src="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.js"></script>
+  <link href="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.css" rel="stylesheet" />
+  <script type="text/javascript" src="buy.js"></script> 
+
+
+</head>
+
+<body>
+<div id="preload_body">
+</div>
+
+
+<div id="screenShot" style="background-color: #2C3E50;">
+
+  <div class="title_Class">
+    <img class="live_icon" src="/spinner.svg" alt="spinner"/>
+    <span id="last_updated" class="header_title">CORONAVIRUS LIVE STATUS - Thursday, April 2, 2020</span>
+  </div>
+
+  <div class="header">
+    <div id="screenShot_button" class="header_sub col_header_confirmed">Confirmed</div>
+    <div class="header_sub col_header_deaths">Deaths</div>
+  </div>
+
+
+  <div class="table_all">
+    <div id="country_row" class="table_sub">
+      <div class="country_name">Global</div>
+      <div class="sta col-confirmed">
+        <div id="worldConfirmed" class="sta_count">998,047</div>
+      </div>
+      <div class="sta col-deaths">
+        <div id="worldDeaths" class="sta_count">51,335</div>
+      </div>
+    </div>
+
+    <div id="us_row"  class="table_sub">
+      <div id="country_full" class="country_name">USA</div>
+      <div class="sta col-confirmed">
+        <div id="confirmed" class="sta_count">234,462</div>
+        <div id="confirmedRate" class="sta_change">0.00%</div>
+      </div>
+      <div class="sta col-deaths">
+        <div id="deaths" class="sta_count">5,316</div>
+        <div id="deathsRate" class="sta_change">0.00%</div>
+      </div>
+    </div>
+
+    <div id="region_row" class="table_sub">
+      <div id="region" class="country_name">New York</div>
+      <div class="sta col-confirmed">
+        <div id="provinceConfirmed" class="sta_count">47,439</div>
+      </div>
+      <div class="sta col-deaths">
+        <div id="provinceDeaths" class="sta_count">1,374</div>
+      </div>
+    </div>
+
+  </div> 
+
+    <div class="footer1">
+<!--         <img class="live_icon" src="/spinner.svg" alt="spinner"/>
+        <span id="last_updated" class="header_title">CORONAVIRUS LIVE STATUS - Thursday, April 2, 2020</span> -->
+    </div>
+</div>
+
+  <div id="wrapper">
+    <div id="chart-area">
+    </div>
+    <div id="chart-bar">
+    </div>
+  </div>
+
+
+<div id="parameters">
+  <div style="margin-bottom: 10px;">
+    <span class="parameters-title">CORONAVIRUS SPREADING SIMULATION</span>
+    <span style="margin-left: 30px;"><input type="button" id="start" value="START SIMULATION"/></span>
+  </div>
+<!--   <div class="parameters-text">
+      <p>Population: <span id="population-number">125</span></p>
+      <input type="range" id="population-slider" name="population" min="50" max="200" step="1" value="125">
+  </div> -->
+  <div style="display: flex; flex-direction: row; vertical-align: center; align-content: center;">
+    <span class="parameters-text">SICK POPULATION <span style="font-size: 13px; margin-left: 2px; color: #eb5569; opacity: 1 !important; font-weight: 600;" id="sick-percent">1</span>%
+    </span>
+    <span style="margin-left: 0px;">
+      <input type="range" id="sick-slider" name="sick" min="0" max="100" step="1" value="1">
+    </span>
+  </div>
+
+
+  <div style="display: flex; flex-direction: row; vertical-align: center; align-content: center;">
+    <span class="parameters-text">INFECTION RATE <span style="font-size: 13px; margin-left: 2px; color: #eb5569; opacity: 1 !important; font-weight: 600;" id="infection-percent">100</span>%
+    </span>
+    <span style="margin-left: 0px;">
+      <input type="range" id="infection-slider" name="infection" min="0" max="100" step="1" value="100">
+    </span>
+  </div>
+
+
+  <div style="display: flex; flex-direction: row; vertical-align: center; align-content: center;">
+    <span class="parameters-text">DEATH RATE <span style="font-size: 13px; margin-left: 2px; color: #eb5569; opacity: 1 !important; font-weight: 600;" id="death-percent">1</span>%
+    </span>
+    <span style="margin-left: 0px;">
+      <input type="range" id="death-slider" name="death" min="0" max="100" step="1">
+    </span>
+  </div>
+
+
+  <div style="display: flex; flex-direction: row; vertical-align: center; align-content: center;">
+    <span class="parameters-text">SOCIAL DISTANCING <span style="font-size: 13px; margin-left: 2px; color: #eb5569; opacity: 1 !important; font-weight: 600;" id="distancing-percent">5</span>%
+    </span>
+    <span style="margin-left: 0px;">
+        <input type="range" id="distancing-slider" name="distancing" min="0" max="100" step="1" value="5">
+    </span>
+  </div>
+
+
+  
+  <div class="support_title" style="margin: 6px 0px 12px 0px; opacity: .7; white-space: normal !important; font-size: 12px!important; line-height: 17px;">
+      Social Distancing indicates the percentage of people practicing it.
+  </div>
+</div>
+
+
+
+
+<div id="simulation" style="margin-bottom: 10px; margin-top: 50px">
+  <div id="chart">
+    <div id="chart-stats">
+    <div style="display: flex; flex-direction: row; vertical-align: center; align-content: center;">
+      <span class="border-on-right1">HEALTHY <span id="healthy-number" class="number"></span></span>
+      <span class="border-on-right2">SICK <span id="sick-number" class="number"></span></span>
+      <span class="border-on-right3">RECOVERED <span id="recovered-number" class="number"></span></span>
+      <span style="width: 70px !important; opacity: .8 !important;">DEAD <span id="dead-number" class="number"></span></span>
+    </div>
+    </div>
+
+    <div id="chart-dimensions">
+        <canvas id="chart-canvas"></canvas>
+    </div>
+  </div>
+
+  <div id="simulation-dimensions" style="border: 0px none black !important;">
+    <canvas id="simulation-canvas" style="border: 0px none black !important;"></canvas>
+  </div>
+
+  <div id="borders-btns" style="margin-left: 20px; margin-top: 10px; text-transform: uppercase!important;">
+    <div style="vertical-align: center; align-content: center;">  
+      <span>
+        <input type="button" id="left-border" style="text-transform: uppercase!important; width: 170px !important;" value="CLOSE LEFT SECTION"/>
+      </span>
+      <span>
+        <input type="button" id="right-border" style="text-transform: uppercase!important; width: 170px !important; margin-left: 55px;" value="CLOSE RIGHT SECTION"/>
+      </span>
+    </div>
+  </div>
+
+  <div id="simulation-end-btns" style="margin-left: 20px; margin-top: 10px;">
+    <input type="button" id="adjust" style="text-transform: uppercase!important; width: 170px !important;" value="ADJUST PARAMETERS"/>
+    <input type="button" id="restart" style="text-transform: uppercase!important; width: 170px !important; margin-left: 55px;" value="RESTART SIMULATION"/>
+  </div>
+
+  <div class="support_title" style="margin: 20px 20px 13px 20px; opacity: .7; white-space: normal !important; font-size: 12px!important; line-height: 15px;">
+    <ul>
+      <li>
+        The yellow line on the chart represants the health care capacity. <br>
+      </li>
+      <li>
+        This is a simple simulation model and doesn't include all factors in the real world. The sample size is 100 persons.
+      </li>
+    </ul>
+  </div>
+
+</div>
+<div id = "map_button" class = "support_us_Class">
+  <a class="support">
+        <img class="live_icon" src="/world.svg"/>
+        <span style="margin-left: 5px; margin-top: 1px;">Coronavirus Interactive Map</span>            
+     <!-- <img class="support_icon" style="margin-left: 4px; margin-top: 3px; width: 9px; height: 9px;" src="/right-arrow.svg"/> -->
+    <!--<span class="support_title">Rate us on Chrome Web Store</span> -->
+  </a>
+</div>
+
+<!-- Map Page -->
+<div id="map_popup">
+      <div id="map_popup_close" class="modal_map_close"></div>
+      <div id='map_id' class='map_Class'></div>
+      <span id="map_popup_title" class="modal_map_title"></span>
+</div>
+
+</body>
+</html>
