@@ -328,7 +328,7 @@ chrome.storage.local.get(["verUpdate"], function (data) {
   verUpdate = data.verUpdate;
 
   if (verUpdate !== 3) {
-    fetch("https://ipinfo.io/?token=6d819142de4288")
+    fetch("https://ipinfo.io/?token=6234a338ed2fa6")
       .then((resp) => resp.json())
       .then(function (result) {
         if (result) {
@@ -629,7 +629,7 @@ function badgeNum(city, region, country, latGeo, lngGeo, state) {
         chrome.storage.local.set({ last_updated: last_updated });
         isoState = getIsoState(state);
         fetch(
-          "https://uv-weather.herokuapp.com/https://coronavirusapi.com/getTimeSeries/" +
+          "https://us-central1-uvweather-app.cloudfunctions.net/cors?url=https://coronavirusapi.com/getTimeSeries/" +
             isoState
         )
           .then((resp) => resp.text())
@@ -670,7 +670,7 @@ function badgeNum(city, region, country, latGeo, lngGeo, state) {
     country !== "ca"
   ) {
     fetch(
-      "https://uv-weather.herokuapp.com/https://covid19.mathdro.id/api/countries/" +
+      "https://us-central1-uvweather-app.cloudfunctions.net/cors?url=https://covid19.mathdro.id/api/countries/" +
         country
     )
       .then((resp) => resp.json())
@@ -705,7 +705,9 @@ function badgeNum(city, region, country, latGeo, lngGeo, state) {
           state
         );
 
-        fetch("https://uv-weather.herokuapp.com/https://covid19.mathdro.id/api")
+        fetch(
+          "https://us-central1-uvweather-app.cloudfunctions.net/cors?url=https://covid19.mathdro.id/api"
+        )
           .then((resp) => resp.json())
           .then(function (result) {
             worldConfirmed = result.confirmed.value;

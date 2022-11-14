@@ -577,9 +577,7 @@ document.addEventListener("DOMContentLoaded", function () {
       );
       chart2.render();
 
-      fetch(
-        "https://uv-weather.herokuapp.com/https://pomber.github.io/covid19/timeseries.json"
-      )
+      fetch("https://pomber.github.io/covid19/timeseries.json")
         .then((resp) => resp.json())
         .then(function (result) {
           if (country_full == "USA") {
