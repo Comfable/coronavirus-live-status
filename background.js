@@ -246,81 +246,11 @@ var isoCountries = {
   ZW: "Zimbabwe",
 };
 
-var isoStates = {
-  Alabama: "AL",
-  Alaska: "AK",
-  "American Samoa": "AS",
-  Arizona: "AZ",
-  Arkansas: "AR",
-  California: "CA",
-  Colorado: "CO",
-  Connecticut: "CT",
-  Delaware: "DE",
-  "District Of Columbia": "DC",
-  "Federated States Of Micronesia": "FM",
-  Florida: "FL",
-  Georgia: "GA",
-  Guam: "GU",
-  Hawaii: "HI",
-  Idaho: "ID",
-  Illinois: "IL",
-  Indiana: "IN",
-  Iowa: "IA",
-  Kansas: "KS",
-  Kentucky: "KY",
-  Louisiana: "LA",
-  Maine: "ME",
-  "Marshall Islands": "MH",
-  Maryland: "MD",
-  Massachusetts: "MA",
-  Michigan: "MI",
-  Minnesota: "MN",
-  Mississippi: "MS",
-  Missouri: "MO",
-  Montana: "MT",
-  Nebraska: "NE",
-  Nevada: "NV",
-  "New Hampshire": "NH",
-  "New Jersey": "NJ",
-  "New Mexico": "NM",
-  "New York": "NY",
-  "North Carolina": "NC",
-  "North Dakota": "ND",
-  "Northern Mariana Islands": "MP",
-  Ohio: "OH",
-  Oklahoma: "OK",
-  Oregon: "OR",
-  Palau: "PW",
-  Pennsylvania: "PA",
-  "Puerto Rico": "PR",
-  "Rhode Island": "RI",
-  "South Carolina": "SC",
-  "South Dakota": "SD",
-  Tennessee: "TN",
-  Texas: "TX",
-  Utah: "UT",
-  Vermont: "VT",
-  "Virgin Islands": "VI",
-  Virginia: "VA",
-  Washington: "WA",
-  "West Virginia": "WV",
-  Wisconsin: "WI",
-  Wyoming: "WY",
-};
-
 function getCountryName(countryCode) {
   if (isoCountries.hasOwnProperty(countryCode)) {
     return isoCountries[countryCode];
   } else {
     return countryCode;
-  }
-}
-
-function getIsoState(state) {
-  if (isoStates.hasOwnProperty(state)) {
-    return isoStates[state];
-  } else {
-    return "NY";
   }
 }
 
@@ -334,55 +264,39 @@ chrome.storage.local.get(["verUpdate"], function (data) {
         if (result) {
           countryAPI = JSON.stringify(result.country);
           country = countryAPI.split('"')[1];
-          //country = "JP";
           if (country == "ZZ") {
             country = "US";
           }
           city = JSON.stringify(result.city);
-          region = JSON.stringify(result.region).split('"')[1];
-          if (country == "US" || country == "us") {
-            state = region;
-            chrome.storage.local.set({ state: state });
-            chrome.storage.local.set({ region: state });
-          } else if (country == "HK") {
+          if (country == "HK") {
             city = "New York";
-            state = "New York";
-            region = "New York";
             country = "US";
             latGeo = "40.6639";
             lngGeo = "-73.9383";
-          } else {
-            state = "0";
-            chrome.storage.local.set({ state: "0" });
           }
 
           latandlong = JSON.stringify(result.loc);
           chrome.storage.local.set({ verUpdate: 3 });
           chrome.storage.local.set({ city: city });
-          chrome.storage.local.set({ region: region });
           chrome.storage.local.set({ country: country });
           latlong = latandlong.split('"')[1];
           latGeo = latlong.split(",")[0];
           lngGeo = latlong.split(",")[1];
           chrome.storage.local.set({ latGeo: latGeo });
           chrome.storage.local.set({ lngGeo: lngGeo });
-          badgeNum(city, region, country, latGeo, lngGeo, state);
+          badgeNum(city, country, latGeo, lngGeo);
         } else {
           country = "US";
           chrome.storage.local.set({ verUpdate: 3 });
           chrome.storage.local.set({ country: "US" });
-          chrome.storage.local.set({ region: "New York" });
           chrome.storage.local.set({ city: "New York" });
           chrome.storage.local.set({ latGeo: "40.6639" });
           chrome.storage.local.set({ lngGeo: "-73.9383" });
-          chrome.storage.local.set({ state: "New York" });
           city = "New York";
-          state = "New York";
-          region = "New York";
           country = "US";
           latGeo = "40.6639";
           lngGeo = "-73.9383";
-          badgeNum(city, region, country, latGeo, lngGeo, state);
+          badgeNum(city, country, latGeo, lngGeo);
         }
       });
   }
@@ -390,18 +304,13 @@ chrome.storage.local.get(["verUpdate"], function (data) {
 
 chrome.runtime.onStartup.addListener(function (details) {
   chrome.storage.local.get(
-    ["city", "region", "country", "latGeo", "lngGeo", "state"],
+    ["city", "country", "latGeo", "lngGeo"],
     function (data) {
       city = data.city;
-      region = data.region;
       country = data.country;
       latGeo = data.latGeo;
       lngGeo = data.lngGeo;
-      state = data.state;
-      if (typeof state == "undefined") {
-        state = region;
-      }
-      badgeNum(city, region, country, latGeo, lngGeo, state);
+      badgeNum(city, country, latGeo, lngGeo);
     }
   );
 });
@@ -409,18 +318,13 @@ chrome.runtime.onStartup.addListener(function (details) {
 chrome.runtime.onInstalled.addListener(function (details) {
   if (details.reason == "update") {
     chrome.storage.local.get(
-      ["city", "region", "country", "latGeo", "lngGeo", "state"],
+      ["city", "country", "latGeo", "lngGeo"],
       function (data) {
         city = data.city;
-        region = data.region;
         country = data.country;
         latGeo = data.latGeo;
         lngGeo = data.lngGeo;
-        state = data.state;
-        if (typeof state == "undefined") {
-          state = region;
-        }
-        badgeNum(city, region, country, latGeo, lngGeo, state);
+        badgeNum(city, country, latGeo, lngGeo);
       }
     );
   }
@@ -443,18 +347,13 @@ function intervalUpdateFunction() {
 
     var intervalUpdateTimes = window.setInterval((_) => {
       chrome.storage.local.get(
-        ["city", "region", "country", "latGeo", "lngGeo", "state"],
+        ["city", "country", "latGeo", "lngGeo"],
         function (data) {
           city = data.city;
-          region = data.region;
           country = data.country;
           latGeo = data.latGeo;
           lngGeo = data.lngGeo;
-          state = data.state;
-          if (typeof state == "undefined") {
-            state = region;
-          }
-          badgeNum(city, region, country, latGeo, lngGeo, state);
+          badgeNum(city, country, latGeo, lngGeo);
         }
       );
     }, intervalUpdateTime);
@@ -463,16 +362,7 @@ function intervalUpdateFunction() {
 intervalUpdateFunction();
 
 //badgeDisplay----------------------------------------------------------------------------------
-function badgeUpdate(
-  confirmed,
-  deaths,
-  country_full,
-  last_updated,
-  region,
-  provinceConfirmed,
-  provinceDeaths,
-  state
-) {
+function badgeUpdate(confirmed, deaths, country_full, last_updated) {
   chrome.browserAction.setBadgeBackgroundColor({ color: "#eb5569" });
   confirmedString = confirmed.toString();
   updated = moment(last_updated);
@@ -497,51 +387,7 @@ function badgeUpdate(
     country == "ca" ||
     country == "Canada"
   ) {
-    if (country == "US" || country == "us") {
-      region = state;
-    }
-    updateTimeRelativeBadge =
-      moment(last_updated).format("dddd, MMMM D") +
-      " - Updated " +
-      updated.fromNow();
-    toolTipBadge =
-      country_full +
-      " - " +
-      updateTimeRelativeBadge +
-      " " +
-      " " +
-      "\n" +
-      "----------------------" +
-      "\n" +
-      confirmed.toLocaleString(undefined, { minimumFractionDigits: 0 }) +
-      "  " +
-      " Confirmed" +
-      "\n" +
-      deaths.toLocaleString(undefined, { minimumFractionDigits: 0 }) +
-      "  " +
-      " Deaths" +
-      "\n" +
-      "\n" +
-      region +
-      "\n" +
-      "----------------------" +
-      "\n" +
-      provinceConfirmed.toLocaleString(undefined, {
-        minimumFractionDigits: 0,
-      }) +
-      "  " +
-      " Confirmed" +
-      "\n" +
-      provinceDeaths.toLocaleString(undefined, { minimumFractionDigits: 0 }) +
-      "  " +
-      " Deaths" +
-      "   ";
-    chrome.browserAction.setTitle({ title: toolTipBadge });
-  } else {
-    updateTimeRelativeBadge =
-      moment(last_updated).format("dddd, MMMM D") +
-      " - Updated " +
-      updated.fromNow();
+    updateTimeRelativeBadge = moment(last_updated).format("dddd, MMMM D");
     toolTipBadge =
       country_full +
       " - " +
@@ -559,109 +405,73 @@ function badgeUpdate(
       "  " +
       " Deaths";
     chrome.browserAction.setTitle({ title: toolTipBadge });
+  } else {
+    updateTimeRelativeBadge = moment(last_updated).format("dddd, MMMM D");
+    toolTipBadge =
+      country_full + " - " + updateTimeRelativeBadge + " " + " " + "\n";
+    chrome.browserAction.setTitle({ title: toolTipBadge });
   }
 }
 
-function badgeNum(city, region, country, latGeo, lngGeo, state) {
+function badgeNum(city, country, latGeo, lngGeo) {
   if (country == "CA" || country == "ca") {
-    fetch("https://covid19.mathdro.id/api/countries/" + country)
+    fetch(
+      "https://us-central1-uvweather-app.cloudfunctions.net/cors?url=https://api.covid19api.com/country/" +
+        country
+    )
       .then((resp) => resp.json())
       .then(function (result) {
-        confirmed = result.confirmed.value;
-        deaths = result.deaths.value;
-        country_full = getCountryName(country);
-        //last_updated = new Date();
-        last_updated = result.lastUpdate;
+        size = parseInt(Object.keys(result).length) - 1;
+        confirmed = result[size].Confirmed;
+        deaths = result[size].Deaths;
+        country_full = result[size].Country;
+        last_updated = result[size].Date;
         chrome.storage.local.set({ confirmed: confirmed });
         chrome.storage.local.set({ deaths: deaths });
         chrome.storage.local.set({ last_updated: last_updated });
+        chrome.storage.local.set({ country_full: country_full });
 
-        fetch(
-          "https://covid19.mathdro.id/api/countries/" + country + "/confirmed"
-        )
-          .then((resp) => resp.json())
-          .then(function (result) {
-            for (var i = 0; i < result.length; i++) {
-              if (result[i].provinceState == region) {
-                provinceConfirmed = result[i].confirmed;
-                provinceDeaths = result[i].deaths;
-              }
-            }
+        badgeUpdate(confirmed, deaths, country_full, last_updated);
+      });
 
-            chrome.storage.local.set({ region: region });
-            chrome.storage.local.set({ state: "-" });
-            chrome.storage.local.set({ provinceConfirmed: provinceConfirmed });
-            chrome.storage.local.set({ provinceDeaths: provinceDeaths });
-            chrome.storage.local.set({ country_full: country_full });
-
-            badgeUpdate(
-              confirmed,
-              deaths,
-              country_full,
-              last_updated,
-              region,
-              provinceConfirmed,
-              provinceDeaths,
-              state
-            );
-            fetch("https://covid19.mathdro.id/api")
-              .then((resp) => resp.json())
-              .then(function (result) {
-                worldConfirmed = result.confirmed.value;
-                worldDeaths = result.deaths.value;
-                chrome.storage.local.set({ worldConfirmed: worldConfirmed });
-                chrome.storage.local.set({ worldDeaths: worldDeaths });
-              });
-          });
+    fetch("https://api.covid19api.com/summary")
+      .then((resp) => resp.json())
+      .then(function (result) {
+        worldConfirmed = result.Global.TotalConfirmed;
+        worldDeaths = result.Global.TotalDeaths;
+        chrome.storage.local.set({ worldConfirmed: worldConfirmed });
+        chrome.storage.local.set({ worldDeaths: worldDeaths });
       });
   }
   if (country == "US" || country == "us") {
-    fetch("https://covid19.mathdro.id/api/countries/" + country)
+    fetch(
+      "https://us-central1-uvweather-app.cloudfunctions.net/cors?url=https://api.covid19api.com/country/" +
+        country
+    )
       .then((resp) => resp.json())
       .then(function (result) {
-        confirmed = result.confirmed.value;
-        deaths = result.deaths.value;
-        country_full = getCountryName(country);
-        //last_updated = new Date();
-        last_updated = result.lastUpdate;
+        size = parseInt(Object.keys(result).length) - 1;
+        confirmed = result[size].Confirmed;
+        deaths = result[size].Deaths;
+        country_full = result[size].Country;
+        last_updated = result[size].Date;
         chrome.storage.local.set({ confirmed: confirmed });
         chrome.storage.local.set({ deaths: deaths });
         chrome.storage.local.set({ last_updated: last_updated });
-        isoState = getIsoState(state);
-        fetch(
-          "https://us-central1-uvweather-app.cloudfunctions.net/cors?url=https://coronavirusapi.com/getTimeSeries/" +
-            isoState
-        )
-          .then((resp) => resp.text())
-          .then(function (result) {
-            result = result.split(/[\s,]+/);
-            provinceConfirmed = parseInt(result[result.length - 2]);
-            provinceDeaths = parseInt(result[result.length - 1]);
+        chrome.storage.local.set({ country_full: country_full });
 
-            chrome.storage.local.set({ region: state });
-            chrome.storage.local.set({ state: state });
-            chrome.storage.local.set({ provinceConfirmed: provinceConfirmed });
-            chrome.storage.local.set({ provinceDeaths: provinceDeaths });
-            chrome.storage.local.set({ country_full: country_full });
-            badgeUpdate(
-              confirmed,
-              deaths,
-              country_full,
-              last_updated,
-              region,
-              provinceConfirmed,
-              provinceDeaths,
-              state
-            );
-            fetch("https://covid19.mathdro.id/api")
-              .then((resp) => resp.json())
-              .then(function (result) {
-                worldConfirmed = result.confirmed.value;
-                worldDeaths = result.deaths.value;
-                chrome.storage.local.set({ worldConfirmed: worldConfirmed });
-                chrome.storage.local.set({ worldDeaths: worldDeaths });
-              });
+        fetch(
+          "https://us-central1-uvweather-app.cloudfunctions.net/cors?url=https://api.covid19api.com/summary"
+        )
+          .then((resp) => resp.json())
+          .then(function (result) {
+            worldConfirmed = result.Global.TotalConfirmed;
+            worldDeaths = result.Global.TotalDeaths;
+            chrome.storage.local.set({ worldConfirmed: worldConfirmed });
+            chrome.storage.local.set({ worldDeaths: worldDeaths });
           });
+
+        badgeUpdate(confirmed, deaths, country_full, last_updated);
       });
   } else if (
     country !== "US" &&
@@ -670,48 +480,31 @@ function badgeNum(city, region, country, latGeo, lngGeo, state) {
     country !== "ca"
   ) {
     fetch(
-      "https://us-central1-uvweather-app.cloudfunctions.net/cors?url=https://covid19.mathdro.id/api/countries/" +
+      "https://us-central1-uvweather-app.cloudfunctions.net/cors?url=https://api.covid19api.com/country/" +
         country
     )
       .then((resp) => resp.json())
       .then(function (result) {
-        confirmed = result.confirmed.value;
-        deaths = result.deaths.value;
-        country_full = getCountryName(country);
-        //last_updated = new Date();
-        last_updated = result.lastUpdate;
-        region = "-";
-        provinceConfirmed = "-";
-        provinceDeaths = "-";
-        state = "-";
+        size = parseInt(Object.keys(result).length) - 1;
+        confirmed = result[size].Confirmed;
+        deaths = result[size].Deaths;
+        country_full = result[size].Country;
+        last_updated = result[size].Date;
 
         chrome.storage.local.set({ confirmed: confirmed });
         chrome.storage.local.set({ deaths: deaths });
         chrome.storage.local.set({ last_updated: last_updated });
-        chrome.storage.local.set({ region: "-" });
-        chrome.storage.local.set({ state: "-" });
-        chrome.storage.local.set({ provinceConfirmed: "-" });
-        chrome.storage.local.set({ provinceDeaths: "-" });
         chrome.storage.local.set({ country_full: country_full });
 
-        badgeUpdate(
-          confirmed,
-          deaths,
-          country_full,
-          last_updated,
-          region,
-          provinceConfirmed,
-          provinceDeaths,
-          state
-        );
+        badgeUpdate(confirmed, deaths, country_full, last_updated);
 
         fetch(
-          "https://us-central1-uvweather-app.cloudfunctions.net/cors?url=https://covid19.mathdro.id/api"
+          "https://us-central1-uvweather-app.cloudfunctions.net/cors?url=https://api.covid19api.com/summary"
         )
           .then((resp) => resp.json())
           .then(function (result) {
-            worldConfirmed = result.confirmed.value;
-            worldDeaths = result.deaths.value;
+            worldConfirmed = result.Global.TotalConfirmed;
+            worldDeaths = result.Global.TotalDeaths;
             chrome.storage.local.set({ worldConfirmed: worldConfirmed });
             chrome.storage.local.set({ worldDeaths: worldDeaths });
           });

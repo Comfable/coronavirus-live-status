@@ -19,9 +19,6 @@ document.addEventListener("DOMContentLoaded", function () {
       "More from this developer<br>UV WEATHER CHROME EXTENSION <br>Check the forecast right in your browser.<br> <br>CLICK HERE to KNOW MORE<br>Featured by Chrome Web Store",
     destination:
       "https://chrome.google.com/webstore/detail/uv-weather/ngeokhpbgoadbpdpnplcminbjhdecjeb",
-    // className: "rateUs",
-    // text: "THIS WORK NEEDS YOU.<br>Please show your support by taking a moment to rate us.<br>Together, we’re making a difference.<br> <br>CLICK HERE to RATE US<br>It won't take more than 30 seconds.",
-    // destination: 'https://chrome.google.com/webstore/detail/coronavirus-live-status-c/ilfokbeknllmcepedkagnjciemcjncpc/reviews',
     newWindow: true,
     gravity: "top",
     position: "left",
@@ -29,20 +26,14 @@ document.addEventListener("DOMContentLoaded", function () {
     stopOnFocus: true,
     backgroundColor: "#eb5569",
     duration: 1200000,
-    //avatar: '/coronavirus_128.png'
-    // callback: function(){
-    // }
   });
 
   chrome.storage.local.get(
     [
       "latGeo",
       "lngGeo",
-      "region",
       "confirmed",
       "deaths",
-      "provinceConfirmed",
-      "provinceDeaths",
       "country_full",
       "worldConfirmed",
       "worldDeaths",
@@ -50,13 +41,10 @@ document.addEventListener("DOMContentLoaded", function () {
       "last_updated",
     ],
     function (data) {
-      region = data.region;
       country_full = data.country_full;
       country = data.country;
       confirmed = data.confirmed;
       deaths = data.deaths;
-      provinceConfirmed = data.provinceConfirmed;
-      provinceDeaths = data.provinceDeaths;
       worldConfirmed = data.worldConfirmed;
       worldDeaths = data.worldDeaths;
       last_updated = data.last_updated;
@@ -64,7 +52,6 @@ document.addEventListener("DOMContentLoaded", function () {
       lngGeo = data.lngGeo;
 
       var wrapper = document.getElementById("wrapper");
-      document.querySelector("#region").textContent = region;
       document.querySelector(
         "#confirmed"
       ).textContent = confirmed.toLocaleString(undefined, {
@@ -79,17 +66,6 @@ document.addEventListener("DOMContentLoaded", function () {
       updated = moment(last_updated);
       document.querySelector("#last_updated").textContent =
         "Coronavirus Live Status";
-      //      document.querySelector("#last_updated").textContent = 'CORONAVIRUS LIVE STATUS - ' +  moment(last_updated).format('dddd, MMMM D') + " - Updated " + updated.fromNow();
-      document.querySelector(
-        "#provinceConfirmed"
-      ).textContent = provinceConfirmed.toLocaleString(undefined, {
-        minimumFractionDigits: 0,
-      });
-      document.querySelector(
-        "#provinceDeaths"
-      ).textContent = provinceDeaths.toLocaleString(undefined, {
-        minimumFractionDigits: 0,
-      });
       document.querySelector("#country_full").textContent = country_full;
       document.querySelector(
         "#worldConfirmed"
@@ -101,15 +77,6 @@ document.addEventListener("DOMContentLoaded", function () {
       ).textContent = worldDeaths.toLocaleString(undefined, {
         minimumFractionDigits: 0,
       });
-
-      if (region == "-") {
-        document.querySelector("#region_row").style.display = "none";
-        document.getElementsByTagName("body")[0].style.height = 150 + "px";
-      } else {
-        document.querySelector("#country_row").style.display = "none";
-        document.querySelector("#region_row").style.display = "flex";
-        document.getElementsByTagName("body")[0].style.height = 200 + "px";
-      }
 
       (function () {
         "use strict";
@@ -237,13 +204,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
           Simulation.init(simulation, chart, simulationStats, simulationEnd, {
             totalPopulation: 100,
-            //totalPopulation: slidersValues.population,
             sickPopulation: parseInt((100 * slidersValues.sick) / 100),
-            //sickPopulation: parseInt(slidersValues.population * slidersValues.sick / 100),
             socialDistancingPopulation: parseInt(
               (100 * slidersValues.distancing) / 100
             ),
-            //socialDistancingPopulation: parseInt(slidersValues.population * slidersValues.distancing / 100),
             infectionRate: slidersValues.infection / 100,
             deathRate: slidersValues.death / 100,
           });
@@ -301,10 +265,6 @@ document.addEventListener("DOMContentLoaded", function () {
       var upToday = Math.floor(
         (new Date() - new Date("22 Jan 2020")) / (24 * 3600000)
       );
-      // var data = generateDayWiseTimeSeries(new Date("21 Jan 2020").getTime(), upToday, {
-      //   min: 0,
-      //   max: 0
-      // });
 
       const initialYaxis = [
         { show: false },
@@ -597,11 +557,6 @@ document.addEventListener("DOMContentLoaded", function () {
           var restructuredData_confirmed = cTimeline.reduce((a, b) => {
             return a.concat([{ date: b["date"], confirmed: b["confirmed"] }]);
           }, []);
-          // var restructuredData_recovered = cTimeline.reduce((a, b) => {
-          //     return a.concat([
-          //         { "date": b["date"], "recovered": b["recovered"] },
-          //     ]);
-          // }, []);
           var restructuredData_deaths = cTimeline.reduce((a, b) => {
             return a.concat([{ date: b["date"], deaths: b["deaths"] }]);
           }, []);
@@ -613,10 +568,6 @@ document.addEventListener("DOMContentLoaded", function () {
               return { x: row.date, y: row.confirmed };
             }
           );
-          // restructuredData_recovered_2 = Object.values(restructuredData_recovered);
-          // const restructuredData_recovered_3 = restructuredData_recovered_2.map(function(row) {
-          //    return { 'x' : row.date, 'y' : row.recovered }
-          // })
           restructuredData_deaths_2 = Object.values(restructuredData_deaths);
           const restructuredData_deaths_3 = restructuredData_deaths_2.map(
             function (row) {
@@ -629,7 +580,6 @@ document.addEventListener("DOMContentLoaded", function () {
               type: "column",
               data: restructuredData_confirmed_3,
             },
-            // {name: 'Recovered', type: 'column', data: restructuredData_recovered_3},
             { name: "Deaths", type: "column", data: restructuredData_deaths_3 },
           ]);
 
@@ -638,13 +588,6 @@ document.addEventListener("DOMContentLoaded", function () {
               data: restructuredData_confirmed_3,
             },
           ]);
-
-          // setTimeout(function () {
-          //   const legendItem3 = document.querySelector(
-          //     '.apexcharts-legend-text[rel="3"]'
-          //   );
-          //   legendItem3.dispatchEvent(new Event("click"));
-          // }, 1000);
 
           ConfirmedRate = changePercentage(todayConfirmed, timelineConfirmed);
           DeathsRate = changePercentage(todayDeaths, timelineDeaths);
@@ -693,42 +636,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         simulation.style.display = "none";
-        screenShot.style.display = "none";
-        wrapper.style.display = "none";
-        parameters.style.display = "none";
-        mapButton.style.display = "none";
-        setTimeout(function () {
-          mapClose.style.visibility = "visible";
-        }, 300);
-        mapInner.style.visibility = "visible";
-        Map();
-      });
-
-      document.querySelector("#country_row").addEventListener("click", (e) => {
-        screenShot.style.display = "none";
-        wrapper.style.display = "none";
-        parameters.style.display = "none";
-        mapButton.style.display = "none";
-        setTimeout(function () {
-          mapClose.style.visibility = "visible";
-        }, 300);
-        mapInner.style.visibility = "visible";
-        Map();
-      });
-
-      document.querySelector("#us_row").addEventListener("click", (e) => {
-        screenShot.style.display = "none";
-        wrapper.style.display = "none";
-        parameters.style.display = "none";
-        mapButton.style.display = "none";
-        setTimeout(function () {
-          mapClose.style.visibility = "visible";
-        }, 300);
-        mapInner.style.visibility = "visible";
-        Map();
-      });
-
-      document.querySelector("#region_row").addEventListener("click", (e) => {
         screenShot.style.display = "none";
         wrapper.style.display = "none";
         parameters.style.display = "none";
@@ -930,16 +837,13 @@ document.addEventListener("DOMContentLoaded", function () {
               if (
                 location.country == "US" ||
                 location.country == "USA" ||
-                location.country == "United States of America" ||
-                location.country == "Canada"
+                location.country == "United States of America"
               ) {
                 element.style.height = "0px";
                 element.style.width = "0px";
               } else {
                 element.style.height = getSizeFromCount(location.cases);
                 element.style.width = getSizeFromCount(location.cases);
-                //element.style.backgroundColor = getColorFromCount(location.cases);
-                //element.style.opacity = .6;
               }
 
               element.addEventListener("mouseenter", () => popup.addTo(map));
@@ -982,56 +886,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
               element.style.height = getSizeFromCount(location.stats.confirmed);
               element.style.width = getSizeFromCount(location.stats.confirmed);
-              //element.style.backgroundColor = getColorFromCount(location.stats.confirmed);
-              //element.style.opacity = .6;
-
-              element.addEventListener("mouseenter", () => popup.addTo(map));
-              element.addEventListener("mouseleave", () => popup.remove());
-
-              marker.setPopup(popup);
-              marker.addTo(map);
-            });
-          });
-
-        fetch("https://covid19.mathdro.id/api/countries/ca/confirmed")
-          .then((response) => response.json())
-          .then((data) => {
-            data.forEach((location) => {
-              var popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
-                "<h3>" +
-                  location.provinceState +
-                  "</h3>" +
-                  "<br>" +
-                  location.confirmed.toLocaleString(undefined, {
-                    minimumFractionDigits: 0,
-                  }) +
-                  " Total cases" +
-                  "<br>" +
-                  location.deaths.toLocaleString(undefined, {
-                    minimumFractionDigits: 0,
-                  }) +
-                  " Deaths"
-              );
-
-              var el = document.createElement("div");
-              el.id = "marker";
-
-              let marker = new mapboxgl.Marker(el).setLngLat([
-                location.long,
-                location.lat,
-              ]);
-              const element = marker.getElement();
-              element.id = "marker";
-
-              if (location.country == "CA" || location.country == "Canada") {
-                element.style.height = "0px";
-                element.style.width = "0px";
-              } else {
-                element.style.height = getSizeFromCount(location.confirmed);
-                element.style.width = getSizeFromCount(location.confirmed);
-                //element.style.backgroundColor = getColorFromCount(location.confirmed);
-                //element.style.opacity = .6;
-              }
 
               element.addEventListener("mouseenter", () => popup.addTo(map));
               element.addEventListener("mouseleave", () => popup.remove());
