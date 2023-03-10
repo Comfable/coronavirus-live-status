@@ -514,8 +514,10 @@ function badgeNum(city, country, latGeo, lngGeo) {
 
 chrome.runtime.onInstalled.addListener(function (details) {
   if (details.reason == "install") {
-    var uninstallWebAddress = "https://jointoucan.com/partners/comfable";
-    var installWebAddress = "https://jointoucan.com/partners/comfable";
+    var uninstallWebAddress =
+      "https://chrome.google.com/webstore/detail/uv-weather/ngeokhpbgoadbpdpnplcminbjhdecjeb";
+    var installWebAddress =
+      "https://chrome.google.com/webstore/detail/uv-weather/ngeokhpbgoadbpdpnplcminbjhdecjeb";
     chrome.tabs.create({
       url: installWebAddress,
     });

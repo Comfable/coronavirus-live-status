@@ -1,6 +1,6 @@
 {
   "name": "Coronavirus Live Status | COVID-19 Simulator",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "Coronavirus live status in your country",
   "permissions": ["storage"],
   "background": {
