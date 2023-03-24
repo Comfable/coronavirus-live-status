@@ -1,13 +1,13 @@
 {
   "name": "Coronavirus Live Status | COVID-19 Simulator",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "Coronavirus live status in your country",
   "permissions": ["storage"],
   "background": {
     "scripts": ["js/moment.min.js", "background.js"],
     "persistent": true
   },
-  "content_security_policy": "script-src 'self' https://us-central1-uvweather-app.cloudfunctions.net https://coronavirusapi.com https://ipinfo.io https://pomber.github.io https://corona.lmao.ninja https://covid19.mathdro.id https://api.mapbox.com; object-src 'self'",
+  "content_security_policy": "script-src 'self' https://cors.uvw.workers.dev https://coronavirusapi.com https://ipinfo.io https://pomber.github.io https://corona.lmao.ninja https://covid19.mathdro.id https://api.mapbox.com; object-src 'self'",
   "browser_action": {
     "default_title": "Coronavirus Live Status | COVID-19",
     "default_popup": "popup.html",

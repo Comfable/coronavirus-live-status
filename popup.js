@@ -619,282 +619,286 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       }
 
-      var mapInner = document.getElementById("map_id");
-      var mapClose = document.getElementById("map_popup_close");
-      var screenShot = document.getElementById("screenShot");
-      var wrapper = document.getElementById("wrapper");
-      var parameters = document.getElementById("parameters");
-      var mapButton = document.getElementById("map_button");
-      var simulation = document.getElementById("simulation");
+      // var mapInner = document.getElementById("map_id");
+      // var mapClose = document.getElementById("map_popup_close");
+      // var screenShot = document.getElementById("screenShot");
+      // var wrapper = document.getElementById("wrapper");
+      // var parameters = document.getElementById("parameters");
+      // // var mapButton = document.getElementById("map_button");
+      // var simulation = document.getElementById("simulation");
 
-      document.querySelector("#map_button").addEventListener("click", (e) => {
-        chrome.storage.local.get("mainPageClick", function (data) {
-          mainPageClick = data.mainPageClick;
-          if (mainPageClick == "1") {
-            myToast.hideToast();
-          }
-        });
+      // document.querySelector("#map_button").addEventListener("click", (e) => {
+      //   chrome.storage.local.get("mainPageClick", function (data) {
+      //     mainPageClick = data.mainPageClick;
+      //     if (mainPageClick == "1") {
+      //       myToast.hideToast();
+      //     }
+      //   });
 
-        simulation.style.display = "none";
-        screenShot.style.display = "none";
-        wrapper.style.display = "none";
-        parameters.style.display = "none";
-        mapButton.style.display = "none";
-        setTimeout(function () {
-          mapClose.style.visibility = "visible";
-        }, 300);
-        mapInner.style.visibility = "visible";
-        Map();
-      });
+      //   simulation.style.display = "none";
+      //   screenShot.style.display = "none";
+      //   wrapper.style.display = "none";
+      //   parameters.style.display = "none";
+      //   mapButton.style.display = "none";
+      //   setTimeout(function () {
+      //     mapClose.style.visibility = "visible";
+      //   }, 300);
+      //   mapInner.style.visibility = "visible";
+      //   Map();
+      // });
 
-      document
-        .querySelector("#map_popup_close")
-        .addEventListener("click", (e) => {
-          mapInner.style.visibility = "hidden";
-          mapClose.style.visibility = "hidden";
-          screenShot.style.display = "block";
-          wrapper.style.display = "block";
-          parameters.style.display = "block";
-          mapButton.style.display = "block";
-          chrome.storage.local.set({ mainPageClick: "0" });
-        });
+      // document
+      //   .querySelector("#map_popup_close")
+      //   .addEventListener("click", (e) => {
+      //     mapInner.style.visibility = "hidden";
+      //     mapClose.style.visibility = "hidden";
+      //     screenShot.style.display = "block";
+      //     wrapper.style.display = "block";
+      //     parameters.style.display = "block";
+      //     mapButton.style.display = "block";
+      //     chrome.storage.local.set({ mainPageClick: "0" });
+      //   });
 
-      function Map() {
-        mapStyle = "mapbox://styles/mapbox/light-v10";
-        mapboxgl.accessToken =
-          "pk.eyJ1IjoidXZ3ZWF0aGVyIiwiYSI6ImNrOXdxa2Q3czBjYXgzcm50cnpkNnFvM3QifQ.QVJcndyavGweKZBD-pOBEw";
-        if (
-          typeof (latGeo !== "undefined") ||
-          typeof (lngGeo !== "undefined")
-        ) {
-          latandlongMapBox = JSON.parse("[" + lngGeo + "," + latGeo + "]");
-        } else {
-          latandlongMapBox = [-79.3832, 43.6532];
-        }
+      // function Map() {
+      //   mapStyle = "mapbox://styles/mapbox/light-v10";
+      //   mapboxgl.accessToken =
+      //     "pk.eyJ1IjoidXZ3ZWF0aGVyIiwiYSI6ImNrOXdxa2Q3czBjYXgzcm50cnpkNnFvM3QifQ.QVJcndyavGweKZBD-pOBEw";
+      //   if (
+      //     typeof (latGeo !== "undefined") ||
+      //     typeof (lngGeo !== "undefined")
+      //   ) {
+      //     latandlongMapBox = JSON.parse("[" + lngGeo + "," + latGeo + "]");
+      //   } else {
+      //     latandlongMapBox = [-79.3832, 43.6532];
+      //   }
 
-        const getSizeFromCount = (count) => {
-          if (count >= 1000000) {
-            return "70px";
-          }
-          if (count >= 500000) {
-            return "60px";
-          }
-          if (count >= 200000) {
-            return "50px";
-          }
-          if (count >= 100000) {
-            return "45px";
-          }
-          if (count >= 50000) {
-            return "35px";
-          }
-          if (count >= 10000) {
-            return "25px";
-          }
-          if (count >= 5000) {
-            return "20px";
-          }
-          if (count >= 1000) {
-            return "12px";
-          }
-          if (count >= 500) {
-            return "8px";
-          }
-          if (count >= 400) {
-            return "7px";
-          }
-          if (count >= 300) {
-            return "6px";
-          }
-          if (count >= 200) {
-            return "5px";
-          }
-          if (count >= 100) {
-            return "4px";
-          }
-          if (count >= 50) {
-            return "4px";
-          }
-          if (count >= 20) {
-            return "3px";
-          }
-          if (count >= 10) {
-            return "2px";
-          }
-          if (count >= 5) {
-            return "1px";
-          }
-          if (count == 0) {
-            return "0px";
-          }
-          return "2px";
-        };
+      //   const getSizeFromCount = (count) => {
+      //     if (count >= 1000000) {
+      //       return "70px";
+      //     }
+      //     if (count >= 500000) {
+      //       return "60px";
+      //     }
+      //     if (count >= 200000) {
+      //       return "50px";
+      //     }
+      //     if (count >= 100000) {
+      //       return "45px";
+      //     }
+      //     if (count >= 50000) {
+      //       return "35px";
+      //     }
+      //     if (count >= 10000) {
+      //       return "25px";
+      //     }
+      //     if (count >= 5000) {
+      //       return "20px";
+      //     }
+      //     if (count >= 1000) {
+      //       return "12px";
+      //     }
+      //     if (count >= 500) {
+      //       return "8px";
+      //     }
+      //     if (count >= 400) {
+      //       return "7px";
+      //     }
+      //     if (count >= 300) {
+      //       return "6px";
+      //     }
+      //     if (count >= 200) {
+      //       return "5px";
+      //     }
+      //     if (count >= 100) {
+      //       return "4px";
+      //     }
+      //     if (count >= 50) {
+      //       return "4px";
+      //     }
+      //     if (count >= 20) {
+      //       return "3px";
+      //     }
+      //     if (count >= 10) {
+      //       return "2px";
+      //     }
+      //     if (count >= 5) {
+      //       return "1px";
+      //     }
+      //     if (count == 0) {
+      //       return "0px";
+      //     }
+      //     return "2px";
+      //   };
 
-        const getColorFromCount = (count) => {
-          if (count >= 50000) {
-            return "#670000";
-          }
-          if (count >= 10000) {
-            return "#9a0000";
-          }
-          if (count >= 5000) {
-            return "#cc0000";
-          }
-          if (count >= 1000) {
-            return "#ff0000";
-          }
-          if (count >= 500) {
-            return "#ff8800";
-          }
-          if (count >= 100) {
-            return "#feb805";
-          }
-          return "#ffd700";
-        };
+      //   const getColorFromCount = (count) => {
+      //     if (count >= 50000) {
+      //       return "#670000";
+      //     }
+      //     if (count >= 10000) {
+      //       return "#9a0000";
+      //     }
+      //     if (count >= 5000) {
+      //       return "#cc0000";
+      //     }
+      //     if (count >= 1000) {
+      //       return "#ff0000";
+      //     }
+      //     if (count >= 500) {
+      //       return "#ff8800";
+      //     }
+      //     if (count >= 100) {
+      //       return "#feb805";
+      //     }
+      //     return "#ffd700";
+      //   };
 
-        var map = new mapboxgl.Map({
-          container: "map_id",
-          style: mapStyle,
-          center: latandlongMapBox,
-          minZoom: 1,
-          maxZoom: 6,
-          zoom: 5,
-        });
+      // var map = new mapboxgl.Map({
+      //   container: "map_id",
+      //   style: mapStyle,
+      //   center: latandlongMapBox,
+      //   minZoom: 1,
+      //   maxZoom: 6,
+      //   zoom: 5,
+      // });
 
-        map.addControl(new mapboxgl.NavigationControl());
+      // map.addControl(new mapboxgl.NavigationControl());
 
-        fetch("https://disease.sh/v3/covid-19/countries")
-          .then((response) => response.json())
-          .then((data) => {
-            data.forEach((location) => {
-              if (location.cases == 0) {
-                location.cases = "-";
-              }
-              if (location.deaths == 0) {
-                location.deaths = "-";
-              }
-              if (location.tests == 0) {
-                location.tests = "-";
-              }
-              if (location.casesPerOneMillion == 0) {
-                location.casesPerOneMillion = "-";
-              }
-              if (location.deathsPerOneMillion == 0) {
-                location.deathsPerOneMillion = "-";
-              }
-              if (location.testsPerOneMillion == 0) {
-                location.testsPerOneMillion = "-";
-              }
+      // fetch(
+      //   "https://cors.uvw.workers.dev/?https://disease.sh/v3/covid-19/countries"
+      // )
+      //   .then((response) => response.json())
+      //   .then((data) => {
+      //     data.forEach((location) => {
+      //       if (location.cases == 0) {
+      //         location.cases = "-";
+      //       }
+      //       if (location.deaths == 0) {
+      //         location.deaths = "-";
+      //       }
+      //       if (location.tests == 0) {
+      //         location.tests = "-";
+      //       }
+      //       if (location.casesPerOneMillion == 0) {
+      //         location.casesPerOneMillion = "-";
+      //       }
+      //       if (location.deathsPerOneMillion == 0) {
+      //         location.deathsPerOneMillion = "-";
+      //       }
+      //       if (location.testsPerOneMillion == 0) {
+      //         location.testsPerOneMillion = "-";
+      //       }
 
-              var popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
-                "<h3>" +
-                  location.country +
-                  "</h3>" +
-                  "<br>" +
-                  location.cases.toLocaleString(undefined, {
-                    minimumFractionDigits: 0,
-                  }) +
-                  " Total cases" +
-                  "<br>" +
-                  location.deaths.toLocaleString(undefined, {
-                    minimumFractionDigits: 0,
-                  }) +
-                  " Deaths" +
-                  "<br>" +
-                  location.tests.toLocaleString(undefined, {
-                    minimumFractionDigits: 0,
-                  }) +
-                  " Tested" +
-                  "<br>" +
-                  "<br>" +
-                  location.casesPerOneMillion.toLocaleString(undefined, {
-                    minimumFractionDigits: 0,
-                  }) +
-                  " Cases per million" +
-                  "<br>" +
-                  location.deathsPerOneMillion.toLocaleString(undefined, {
-                    minimumFractionDigits: 0,
-                  }) +
-                  " Deaths per million" +
-                  "<br>" +
-                  location.testsPerOneMillion.toLocaleString(undefined, {
-                    minimumFractionDigits: 0,
-                  }) +
-                  " Tested per million" +
-                  "<br>"
-              );
+      //       var popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
+      //         "<h3>" +
+      //           location.country +
+      //           "</h3>" +
+      //           "<br>" +
+      //           location.cases.toLocaleString(undefined, {
+      //             minimumFractionDigits: 0,
+      //           }) +
+      //           " Total cases" +
+      //           "<br>" +
+      //           location.deaths.toLocaleString(undefined, {
+      //             minimumFractionDigits: 0,
+      //           }) +
+      //           " Deaths" +
+      //           "<br>" +
+      //           location.tests.toLocaleString(undefined, {
+      //             minimumFractionDigits: 0,
+      //           }) +
+      //           " Tested" +
+      //           "<br>" +
+      //           "<br>" +
+      //           location.casesPerOneMillion.toLocaleString(undefined, {
+      //             minimumFractionDigits: 0,
+      //           }) +
+      //           " Cases per million" +
+      //           "<br>" +
+      //           location.deathsPerOneMillion.toLocaleString(undefined, {
+      //             minimumFractionDigits: 0,
+      //           }) +
+      //           " Deaths per million" +
+      //           "<br>" +
+      //           location.testsPerOneMillion.toLocaleString(undefined, {
+      //             minimumFractionDigits: 0,
+      //           }) +
+      //           " Tested per million" +
+      //           "<br>"
+      //       );
 
-              var el = document.createElement("div");
-              el.id = "marker";
+      //       var el = document.createElement("div");
+      //       el.id = "marker";
 
-              let marker = new mapboxgl.Marker(el).setLngLat([
-                location.countryInfo.long,
-                location.countryInfo.lat,
-              ]);
-              const element = marker.getElement();
-              element.id = "marker";
+      //       let marker = new mapboxgl.Marker(el).setLngLat([
+      //         location.countryInfo.long,
+      //         location.countryInfo.lat,
+      //       ]);
+      //       const element = marker.getElement();
+      //       element.id = "marker";
 
-              if (
-                location.country == "US" ||
-                location.country == "USA" ||
-                location.country == "United States of America"
-              ) {
-                element.style.height = "0px";
-                element.style.width = "0px";
-              } else {
-                element.style.height = getSizeFromCount(location.cases);
-                element.style.width = getSizeFromCount(location.cases);
-              }
+      //       if (
+      //         location.country == "US" ||
+      //         location.country == "USA" ||
+      //         location.country == "United States of America"
+      //       ) {
+      //         element.style.height = "0px";
+      //         element.style.width = "0px";
+      //       } else {
+      //         element.style.height = getSizeFromCount(location.cases);
+      //         element.style.width = getSizeFromCount(location.cases);
+      //       }
 
-              element.addEventListener("mouseenter", () => popup.addTo(map));
-              element.addEventListener("mouseleave", () => popup.remove());
+      //       element.addEventListener("mouseenter", () => popup.addTo(map));
+      //       element.addEventListener("mouseleave", () => popup.remove());
 
-              marker.setPopup(popup);
-              marker.addTo(map);
-            });
-          });
+      //       marker.setPopup(popup);
+      //       marker.addTo(map);
+      //     });
+      //   });
 
-        fetch("https://disease.sh/v3/covid-19/jhucsse/counties")
-          .then((response) => response.json())
-          .then((data) => {
-            data.forEach((location) => {
-              var popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
-                "<h3>" +
-                  location.county +
-                  "</h3>" +
-                  "<br>" +
-                  location.stats.confirmed.toLocaleString(undefined, {
-                    minimumFractionDigits: 0,
-                  }) +
-                  " Total cases" +
-                  "<br>" +
-                  location.stats.deaths.toLocaleString(undefined, {
-                    minimumFractionDigits: 0,
-                  }) +
-                  " Deaths"
-              );
+      // fetch(
+      //   "https://cors.uvw.workers.dev/?https://disease.sh/v3/covid-19/jhucsse/counties"
+      // )
+      //   .then((response) => response.json())
+      //   .then((data) => {
+      //     data.forEach((location) => {
+      //       var popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
+      //         "<h3>" +
+      //           location.county +
+      //           "</h3>" +
+      //           "<br>" +
+      //           location.stats.confirmed.toLocaleString(undefined, {
+      //             minimumFractionDigits: 0,
+      //           }) +
+      //           " Total cases" +
+      //           "<br>" +
+      //           location.stats.deaths.toLocaleString(undefined, {
+      //             minimumFractionDigits: 0,
+      //           }) +
+      //           " Deaths"
+      //       );
 
-              var el = document.createElement("div");
-              el.id = "marker";
+      //       var el = document.createElement("div");
+      //       el.id = "marker";
 
-              let marker = new mapboxgl.Marker(el).setLngLat([
-                location.coordinates.longitude,
-                location.coordinates.latitude,
-              ]);
-              const element = marker.getElement();
-              element.id = "marker";
+      //       let marker = new mapboxgl.Marker(el).setLngLat([
+      //         location.coordinates.longitude,
+      //         location.coordinates.latitude,
+      //       ]);
+      //       const element = marker.getElement();
+      //       element.id = "marker";
 
-              element.style.height = getSizeFromCount(location.stats.confirmed);
-              element.style.width = getSizeFromCount(location.stats.confirmed);
+      //       element.style.height = getSizeFromCount(location.stats.confirmed);
+      //       element.style.width = getSizeFromCount(location.stats.confirmed);
 
-              element.addEventListener("mouseenter", () => popup.addTo(map));
-              element.addEventListener("mouseleave", () => popup.remove());
+      //       element.addEventListener("mouseenter", () => popup.addTo(map));
+      //       element.addEventListener("mouseleave", () => popup.remove());
 
-              marker.setPopup(popup);
-              marker.addTo(map);
-            });
-          });
-      }
+      //       marker.setPopup(popup);
+      //       marker.addTo(map);
+      //     });
+      //   });
+      // }
     }
   );
 });

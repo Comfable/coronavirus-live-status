@@ -340,7 +340,7 @@ function intervalUpdateFunction() {
   chrome.storage.local.get(["IntervalUpdate", ""], function (data) {
     intervalUpdateNumber = data.IntervalUpdate;
     if (typeof intervalUpdateNumber == "undefined") {
-      var intervalUpdateNumber = 60;
+      var intervalUpdateNumber = 360;
       chrome.storage.local.set({ IntervalUpdate: "60" });
     }
     intervalUpdateTime = 1000 * 60 * intervalUpdateNumber; //miliseconds * seconds * minutes
@@ -415,10 +415,7 @@ function badgeUpdate(confirmed, deaths, country_full, last_updated) {
 
 function badgeNum(city, country, latGeo, lngGeo) {
   if (country == "CA" || country == "ca") {
-    fetch(
-      "https://us-central1-uvweather-app.cloudfunctions.net/cors?url=https://api.covid19api.com/country/" +
-        country
-    )
+    fetch("https://api.covid19api.com/country/" + country)
       .then((resp) => resp.json())
       .then(function (result) {
         size = parseInt(Object.keys(result).length) - 1;
@@ -444,10 +441,7 @@ function badgeNum(city, country, latGeo, lngGeo) {
       });
   }
   if (country == "US" || country == "us") {
-    fetch(
-      "https://us-central1-uvweather-app.cloudfunctions.net/cors?url=https://api.covid19api.com/country/" +
-        country
-    )
+    fetch("https://api.covid19api.com/country/" + country)
       .then((resp) => resp.json())
       .then(function (result) {
         size = parseInt(Object.keys(result).length) - 1;
@@ -460,9 +454,7 @@ function badgeNum(city, country, latGeo, lngGeo) {
         chrome.storage.local.set({ last_updated: last_updated });
         chrome.storage.local.set({ country_full: country_full });
 
-        fetch(
-          "https://us-central1-uvweather-app.cloudfunctions.net/cors?url=https://api.covid19api.com/summary"
-        )
+        fetch("https://api.covid19api.com/summary")
           .then((resp) => resp.json())
           .then(function (result) {
             worldConfirmed = result.Global.TotalConfirmed;
@@ -479,10 +471,7 @@ function badgeNum(city, country, latGeo, lngGeo) {
     country !== "CA" &&
     country !== "ca"
   ) {
-    fetch(
-      "https://us-central1-uvweather-app.cloudfunctions.net/cors?url=https://api.covid19api.com/country/" +
-        country
-    )
+    fetch("https://api.covid19api.com/country/" + country)
       .then((resp) => resp.json())
       .then(function (result) {
         size = parseInt(Object.keys(result).length) - 1;
@@ -498,9 +487,7 @@ function badgeNum(city, country, latGeo, lngGeo) {
 
         badgeUpdate(confirmed, deaths, country_full, last_updated);
 
-        fetch(
-          "https://us-central1-uvweather-app.cloudfunctions.net/cors?url=https://api.covid19api.com/summary"
-        )
+        fetch("https://api.covid19api.com/summary")
           .then((resp) => resp.json())
           .then(function (result) {
             worldConfirmed = result.Global.TotalConfirmed;
