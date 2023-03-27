@@ -23,12 +23,6 @@
     <script src="/js/toastify.js"></script>
 
     <link rel="stylesheet" href="/popup.css" media="screen" />
-
-    <script src="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.js"></script>
-    <link
-      href="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.css"
-      rel="stylesheet"
-    />
   </head>
 
   <body>
@@ -228,14 +222,15 @@
       <div
         class="support_title"
         style="
-          margin: 6px 0px 12px 0px;
+          margin: 10px 0px 12px 0px;
           opacity: 0.7;
           white-space: normal !important;
-          font-size: 12px !important;
-          line-height: 17px;
+          font-size: 14px !important;
+          line-height: 22px;
         "
       >
-        Social Distancing indicates the percentage of people practicing it.
+        The percentage of people practicing social distancing is indicated by
+        social distancing.
       </div>
     </div>
 
@@ -337,36 +332,22 @@
           margin: 20px 20px 13px 20px;
           opacity: 0.7;
           white-space: normal !important;
-          font-size: 12px !important;
-          line-height: 15px;
+          font-size: 14px !important;
+          line-height: 22px;
         "
       >
         <ul>
           <li>
-            The yellow line on the chart represants the health care capacity.
+            The health care capacity is represented by the yellow line on the
+            chart.
             <br />
           </li>
           <li>
-            This is a simple simulation model and doesn't include all factors in
-            the real world. The sample size is 100 persons.
+            Sample size is 100, and the basic simulation model lacks real-world
+            factors.
           </li>
         </ul>
       </div>
-    </div>
-    <!-- <div id="map_button" class="support_us_Class">
-      <a class="support">
-        <img class="live_icon" src="/world.svg" />
-        <span style="margin-left: 5px; margin-top: 1px"
-          >Coronavirus Interactive Map</span
-        >
-      </a>
-    </div> -->
-
-    <!-- Map Page -->
-    <div id="map_popup">
-      <div id="map_popup_close" class="modal_map_close"></div>
-      <div id="map_id" class="map_Class"></div>
-      <span id="map_popup_title" class="modal_map_title"></span>
     </div>
   </body>
 </html>

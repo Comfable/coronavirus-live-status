@@ -127,14 +127,6 @@ ul {
   margin-left: 20px;
 }
 
-/*#SvgjsG2007{
-  display: none;
-}
-
-#SvgjsRect2006{
-    display: none;
-}*/
-
 .apexcharts-tooltip {
   margin-top: 75px !important;
 }
@@ -681,60 +673,6 @@ input[id="distancing-slider"]::-webkit-slider-thumb {
   max-width: fit-content;
 }
 
-.modal_map {
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  width: 100%;
-  height: 600px;
-}
-
-.map_Class {
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  width: 100%;
-  height: 600px;
-  z-index: 1;
-  visibility: hidden;
-}
-
-.modal_map_close {
-  position: absolute;
-  top: 15.5px;
-  left: 15.5px;
-  width: 30px;
-  height: 30px;
-  background-image: url("/left-arrow.svg");
-  filter: var(--icon-color);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  cursor: pointer;
-  z-index: 10;
-  visibility: hidden;
-}
-
-.mapboxgl-ctrl-logo {
-  width: 0px !important;
-  height: 0px !important;
-  margin: 0 0 -3px -3px;
-  display: hidden !important;
-  background-repeat: no-repeat;
-}
-
-.mapboxgl-ctrl-top-left,
-.mapboxgl-ctrl-top-right,
-.mapboxgl-ctrl-bottom-left,
-.mapboxgl-ctrl-bottom-right {
-  position: absolute;
-  pointer-events: none;
-  z-index: 10 !important;
-  display: hidden !important;
-  width: 0px !important;
-  height: 0px !important;
-}
-
 .title_Class {
   position: absolute;
   top: 15px;
@@ -761,21 +699,6 @@ input[id="distancing-slider"]::-webkit-slider-thumb {
   background-clip: content-box;
 }
 
-.mapboxgl-popup-close-button {
-  display: none;
-}
-
-.mapboxgl-popup-content {
-  font: 250 13px/18px "Helvetica Neue";
-  padding: 0;
-  width: 200px;
-  color: #000000;
-  white-space: nowrap;
-  background-color: rgba(255, 255, 255, 0.8) !important;
-}
-.mapboxgl-popup-tip {
-  display: none !important;
-}
-.mapboxgl-popup-content-wrapper {
-  padding: 10%;
+#parameters {
+  margin-top: 25px;
 }
